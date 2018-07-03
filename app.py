@@ -9,8 +9,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    
-    return docker_client.images.list()
+    return 'index'
+    # return docker_client.images.list()
 
 if __name__ == '__main__':
     app.run(debug=True)
