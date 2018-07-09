@@ -13,7 +13,7 @@ docker_client = docker.from_env()
 app = Flask(__name__)
 
 @app.route('/newApp', methods = ['POST'])
-def index():
+def new_app():
     new_name = request.get_json()
 
     # docker_client.images.pull(DOCKER_REPO, BASE_NAME + ":" + BASE_TAG)
@@ -22,6 +22,11 @@ def index():
     os.system('sudo docker push ' + DOCKER_REPO + '/' + new_name + ':' + BASE_TAG)
     return str(new_name) + ' was created.'
     # return docker_client.images.list()
+
+
+@app.route('/up', methods = ['GET'])
+def new_app():
+    return "OK."
 
 if __name__ == '__main__':
     app.run(debug=True)
