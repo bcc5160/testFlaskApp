@@ -25,7 +25,7 @@ def new_app():
 
 
 @app.route('/up', methods = ['GET'])
-def new_app():
+def test_server():
     return "OK."
 
 if __name__ == '__main__':
