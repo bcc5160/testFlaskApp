@@ -23,11 +23,8 @@ def new_app():
 
     docker_client.images.push(DOCKER_REPO + "/" + str(new_name) + ":" + BASE_TAG)
 
-    # os.system('sudo docker pull ' + DOCKER_REPO + '/' + BASE_NAME + ':' + BASE_TAG)
-    # os.system('sudo docker tag ' + DOCKER_REPO + '/' + BASE_NAME + ':' + BASE_TAG + ' ' + DOCKER_REPO + '/' + NEW_NAME + ':' + BASE_TAG)
-    # os.system('sudo docker push ' + DOCKER_REPO + '/' + new_name + ':' + BASE_TAG)
     return str(new_name) + ' was created.'
-    # return docker_client.images.list()
+
 
 
 @app.route('/up', methods = ['GET'])
