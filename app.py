@@ -15,8 +15,14 @@ app = Flask(__name__)
 @app.route('/newApp', methods = ['POST'])
 def new_app():
     new_name = request.get_json()
+    
     docker_client.images.pull(DOCKER_REPO + "/" + BASE_NAME + ":" + BASE_TAG)
     
+    image = docker_client.images.get(DOCKER_REPO + "/" + BASE_NAME + ":" + BASE_TAG)
+    image.tag(DOCKER_REPO + "/" + str(new_name) + ":" + BASE_TAG)
+
+    docker_client.images.push(DOCKER_REPO + "/" + str(new_name) + ":" + BASE_TAG)
+
     # os.system('sudo docker pull ' + DOCKER_REPO + '/' + BASE_NAME + ':' + BASE_TAG)
     # os.system('sudo docker tag ' + DOCKER_REPO + '/' + BASE_NAME + ':' + BASE_TAG + ' ' + DOCKER_REPO + '/' + NEW_NAME + ':' + BASE_TAG)
     # os.system('sudo docker push ' + DOCKER_REPO + '/' + new_name + ':' + BASE_TAG)
