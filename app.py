@@ -27,18 +27,11 @@ def new_app():
 
     docker_client.pull(base_app_image + ':' + BASE_TAG)
     docker_client.tag(base_app_image, new_app_image, BASE_TAG)
-    # docker_client.push(new_app_image + ':' + BASE_TAG, stream=True)
+    
     response = [line for line in docker_client.push(new_app_image, stream=True)]
-    # docker_client.images.pull(DOCKER_REPO + "/" + BASE_NAME + ":" + BASE_TAG)
-
-    # image = docker_client.images.get(DOCKER_REPO + "/" + BASE_NAME + ":" + BASE_TAG)
-    # image.tag(DOCKER_REPO + "/" + str(new_name) + ":" + BASE_TAG)
-
-    # docker_client.images.push(DOCKER_REPO + "/" + str(new_name) + ":" + BASE_TAG)
-
+   
     print(response)
     return new_app_image + ':' + BASE_TAG
-
 
 
 @app.route('/up', methods = ['GET'])
@@ -46,6 +39,4 @@ def test_server():
     return "OK."
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
-
-~                                                    
+    app.run(host='0.0.0.0', port=5000, debug=True)                                                   
