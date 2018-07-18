@@ -21,6 +21,7 @@ def new_app():
     new_name = data['new_app']
 
     print(type(str(new_name + ':' + BASE_TAG)))
+    new_name = new_name.replace(" ", "_")
 
     base_app_image = DOCKER_REPO + '/' + BASE_NAME + ':' + BASE_TAG
     new_app_image = DOCKER_REPO + '/' + str(new_name)
@@ -29,7 +30,17 @@ def new_app():
     docker_client.tag(base_app_image, new_app_image, BASE_TAG)
     
     response = [line for line in docker_client.push(new_app_image, stream=True)]
-   
+    
+    # Create a kafka topic for app
+    os.system("bin/kafka-create-topic.sh --zookeeper localhost:2181 --replica 1 --partition 1 --topic " + str(new_name))
+
+    # Create consumer folder with config for topic
+    os.system("cp -r /opt/BigData/BaseApp /opt/BigData/Apps/" + new_app_image)
+
+    # Createconfig
+    f = open(new_app_image +".cfg","w+")
+    f.write("[kafka]\nhost_broker=172.31.87.138:9092\ntopic=" + new_app_image)
+
     print(response)
     return new_app_image + ':' + BASE_TAG
 
