@@ -35,11 +35,11 @@ def new_app():
     os.system("bin/kafka-create-topic.sh --zookeeper localhost:2181 --replica 1 --partition 1 --topic " + str(new_name))
 
     # Create consumer folder with config for topic
-    os.system("cp -r /opt/BigData/BaseApp /opt/BigData/Apps/" + new_app_image)
+    os.system("sudo cp -r /opt/BigData/BaseApp /opt/BigData/Apps/" + new_name)
 
     # Createconfig
-    f = open(new_app_image +".cfg","w+")
-    f.write("[kafka]\nhost_broker=172.31.87.138:9092\ntopic=" + new_app_image)
+    f = open("sudo /opt/BigData/Apps/" + new_name + "/" + new_name +".cfg","w+")
+    f.write("[kafka]\nhost_broker=172.31.87.138:9092\ntopic=" + new_name)
 
     print(response)
     return new_app_image + ':' + BASE_TAG
@@ -48,6 +48,13 @@ def new_app():
 @app.route('/up', methods = ['GET'])
 def test_server():
     return "OK."
+
+@app.route('/startApp', methods = ['POST'])
+def start_app():
+    app_to_start = request.args.get('app')
+    docker_client.pull(app_to_start + ':' + BASE_TAG)
+    docker_client.create_container(image=app_to_start+':'+BASE_TAG, command='/bin/sleep 30')
+    return 'Started' + app_to_start
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)                                                   
