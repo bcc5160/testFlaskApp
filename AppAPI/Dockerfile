@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-MAINTAINER Brittany Chiu "bchiu@textronsystems.com"
+MAINTAINER Brittany Chiu 
 
 RUN apt-get update -y
 RUN apt-get install -y python-pip python-dev build-essential
